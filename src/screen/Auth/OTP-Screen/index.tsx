@@ -3,117 +3,116 @@ import React, { useState } from 'react';
 import {
   View,
   Text,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
   StyleSheet,
-  Pressable,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import OTPInputs from '../../../components/OTP-TextField';
+import OTPInputs from '../../../components/OTP-TextField'; // your OTP component
 import { defaultOtpValues, useOtpForm } from './hooks/useOtpForm';
 import { useNavigation } from '@react-navigation/native';
 
-function OtpScreen() {
+const OtpScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-   const handleOTP = () => {
+  const handleOtp = () => {
     navigation.navigate('DrawerNav' as never);
-  }
-  const onSubmit = async (values: any) => {
-    setLoading(true);
-    console.log('OTP Entered:', values);
-    setLoading(false);
   };
+  const formik = useOtpForm(async values => {
+    setLoading(true);
+    // verify OTP API here
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   navigation.navigate('DrawerNav'); // or your home
+    // }, 700);
+  }, defaultOtpValues);
 
-  const formik = useOtpForm(onSubmit, defaultOtpValues);
-  const { values, handleSubmit, setFieldValue } = formik;
+  const { setFieldValue, handleSubmit, touched, errors } = formik;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#F8F9FE' }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.main}>
+    <SafeAreaView style={styles.safe}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={styles.flex}
+      >
+        <ScrollView contentContainerStyle={styles.page}>
           <View style={styles.card}>
-            <Text style={styles.title}>Verify OTP</Text>
-            <Text style={styles.subtitle}>
-              Enter the 4 digit code sent to your number
-            </Text>
-
-            <View style={{ marginTop: 30 }}>
+            <View style={{ marginTop: 22 }}>
               <OTPInputs
-                onOtpFilled={(otp: string) => {
-                  setFieldValue('otp', otp);
-                }}
+                onOtpFilled={(code: string) => setFieldValue('otp', code)}
               />
             </View>
 
-            <Pressable
-              style={styles.button}
-              onPress={() => handleOTP()}
+            {/* {touched.otp && errors.otp ? (
+              <Text style={styles.error}>{errors.otp}</Text>
+            ) : null} */}
+
+            <TouchableOpacity
+              style={[styles.verifyBtn, loading && styles.btnDisabled]}
+              onPress={handleOtp}
               disabled={loading}
             >
-              <Text style={styles.btnText}>
-                {loading ? 'Verifying...' : 'Verify'}
+              <Text style={styles.verifyText}>
+                {loading ? 'Verifying...' : 'Verify Code'}
               </Text>
-            </Pressable>
+            </TouchableOpacity>
 
-            <Pressable>
-              <Text style={styles.resend}>Resend OTP</Text>
-            </Pressable>
+            <TouchableOpacity style={styles.resend}>
+              <Text style={styles.resendText}>Resend Code</Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
-      </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
-}
+};
+
+export default OtpScreen;
 
 const styles = StyleSheet.create({
-  main: {
+  safe: { flex: 1, backgroundColor: '#DAEDEE' },
+  flex: { flex: 1 },
+  page: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 24,
+    alignItems: 'center',
+    padding: 18,
   },
+
   card: {
-    backgroundColor: '#FFFFFF',
-    padding: 28,
-    borderRadius: 18,
-    elevation: 6,
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 20,
+    alignItems: 'center',
+    elevation: 8,
     shadowColor: '#000',
-    shadowOpacity: 0.15,
-    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.12,
+    shadowOffset: { width: 0, height: 6 },
+    shadowRadius: 12,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#2C3E50',
-  },
-  subtitle: {
-    fontSize: 15,
-    fontWeight: '400',
-    color: '#7A7A7A',
-    marginTop: 6,
-  },
-  button: {
-    marginTop: 25,
+
+  title: { fontSize: 18, fontWeight: '700', color: '#222' },
+  sub: { fontSize: 13, color: '#6b6b6b', marginTop: 0, textAlign: 'center' },
+
+  verifyBtn: {
+    marginTop: 22,
+    backgroundColor: '#00AEEF',
     height: 48,
+    width: '100%',
     borderRadius: 10,
-    backgroundColor: '#0066FF',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  btnText: {
-    color: '#FFF',
-    fontSize: 16,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-  },
-  resend: {
-    marginTop: 18,
-    textAlign: 'center',
-    color: '#0066FF',
-    fontWeight: '600',
-  },
-});
+  btnDisabled: { opacity: 0.6 },
+  verifyText: { color: '#fff', fontWeight: '700' },
 
-export default OtpScreen;
+  resend: { marginTop: 12 },
+  resendText: { color: '#00AEEF', fontWeight: '600' },
+
+  error: { color: '#E53935', marginTop: 8 },
+});
