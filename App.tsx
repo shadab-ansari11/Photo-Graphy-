@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import NavContainer from './src/navigation';
 import { store } from './src/redux/store';
 import AppProviders from './AppProviders';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Initialize persistor
 const persistor = persistStore(store);

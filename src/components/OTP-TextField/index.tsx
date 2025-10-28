@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { OtpInput } from 'react-native-otp-entry';
@@ -12,12 +13,11 @@ interface OTPInputProps {
 const OtpInputField: React.FC<OTPInputProps> = ({
   digits = 4,
   onOtpFilled,
-  title = "OTP Verification",
-  subtitle = "Enter the OTP sent to your number",
+  title = 'OTP Verification',
+  subtitle = 'Enter the OTP sent to your number',
 }) => {
   return (
     <View style={styles.container}>
-      
       {title && <Text style={styles.title}>{title}</Text>}
       {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
 
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingTop: 20,
   },
   title: {
@@ -59,7 +60,9 @@ const styles = StyleSheet.create({
   },
   otpWrapper: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start', // horizontally center
+    alignItems: 'center', // vertically center (optional)
+    alignSelf: 'center',
     gap: 12,
   },
   otpBox: {

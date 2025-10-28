@@ -1,12 +1,14 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 //screen
 import SplashScreen from '../screen/SplashScreen';
 import Login from '../screen/Auth/Login';
 import OtpScreen from '../screen/Auth/OTP-Screen';
 import Home from '../screen/Home';
 import DrawerNav from './DrawerNav';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import useInfo from '../hooks/useInfo';
 
 export type RootStackParamList = {
@@ -19,18 +21,28 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavContainer() {
-//   const {isLoggedIn} = useInfo();
+  //   const {isLoggedIn} = useInfo();
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="SplashScreen"
-        screenOptions={{headerShown: false}}>
-            <Stack.Screen component={SplashScreen} name="SplashScreen" />
-            <Stack.Screen component={Login} name="Login" />
-            <Stack.Screen component={OtpScreen} name="OtpScreen" />
-            <Stack.Screen component={DrawerNav} name="DrawerNav" />
-            <Stack.Screen component={Home} name="Home" />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={styles.container}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="SplashScreen"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen component={SplashScreen} name="SplashScreen" />
+          <Stack.Screen component={Login} name="Login" />
+          <Stack.Screen component={OtpScreen} name="OtpScreen" />
+          <Stack.Screen component={DrawerNav} name="DrawerNav" />
+          <Stack.Screen component={Home} name="Home" />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#09223a', 
+  },
+});

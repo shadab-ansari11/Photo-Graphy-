@@ -7,6 +7,7 @@ import {
   createDrawerNavigator,
   DrawerNavigationProp,
   DrawerScreenProps,
+  DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 
 import {
@@ -17,13 +18,14 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import {RootStackParamList} from '.';
-import Home from '../screen/Home';
+import { RootStackParamList } from '.';
 import About from '../screen/about';
 import DrawerWithButtons from './DrawerWithButtons';
+import BottomTabNav from './BottomTabNav';
 
 export type DrawerParamList = {
   Home: undefined;
+  BottomTabNav: undefined;
   About: undefined;
 };
 
@@ -47,20 +49,21 @@ export type AppNavigationType<T extends keyof DrawerParamList> =
 export type DrawerNavigationType = DrawerNavigationProp<DrawerParamList, any>;
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
-console.log('Drawer :', Drawer);
-
 function DrawerNav() {
   return (
     <Drawer.Navigator
       initialRouteName="Home"
-      drawerContent={(props: any) => <DrawerWithButtons {...props} />}
+      drawerContent={(props: DrawerContentComponentProps) => (
+        <DrawerWithButtons {...props} />
+      )}
       screenOptions={{
         headerShown: false,
         drawerStyle: {
           width: 300,
         },
-      }}>
-      <Drawer.Screen component={Home} name="Home" />
+      }}
+    >
+       <Drawer.Screen name="Home" component={BottomTabNav} />
       <Drawer.Screen component={About} name="About" />
     </Drawer.Navigator>
   );
