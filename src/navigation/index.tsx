@@ -3,13 +3,15 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 //screen
 import SplashScreen from '../screen/SplashScreen';
-import Login from '../screen/Auth';
+import Login from '../screen/Auth/Login';
+import OtpScreen from '../screen/Auth/OTP-Screen';
 import Home from '../screen/Home';
 import DrawerNav from './DrawerNav';
 // import useInfo from '../hooks/useInfo';
 
 export type RootStackParamList = {
   Login?: undefined;
+  OtpScreen?: undefined;
   SplashScreen?: undefined;
   DrawerNav?: undefined;
   Home?: undefined;
@@ -25,6 +27,7 @@ export default function NavContainer() {
         screenOptions={{headerShown: false}}>
             <Stack.Screen component={SplashScreen} name="SplashScreen" />
             <Stack.Screen component={Login} name="Login" />
+            <Stack.Screen component={OtpScreen} name="OtpScreen" />
             <Stack.Screen component={DrawerNav} name="DrawerNav" />
             <Stack.Screen component={Home} name="Home" />
       </Stack.Navigator>

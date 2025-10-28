@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -10,6 +9,7 @@ import AppProviders from './AppProviders';
 
 // Initialize persistor
 const persistor = persistStore(store);
+
 // Filter specific console warnings safely
 const originalWarn = console.warn;
 console.warn = (warning: any) => {
@@ -32,7 +32,7 @@ const SubApp = () => (
   </>
 );
 
-// Main App wrapped with Sentry
+// Main App
 function App() {
   return (
     <AppProviders>

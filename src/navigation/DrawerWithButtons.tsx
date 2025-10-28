@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {View, Text} from 'react-native';
 import React from 'react';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
@@ -12,7 +13,7 @@ export default function DrawerWithButtons(props: DrawerContentComponentProps) {
     dispatch(logout());
   };
   return (
-    <View>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text onPress={handelLogout}>Drawer Buttons heres</Text>
     </View>
   );
